@@ -45,9 +45,24 @@ class DatabaseService {
     return await collection.findOne(query);
   }
 
+  async getAllDocuments<T>(
+    collection: Model<T>
+  ): Promise<T[] | null> {
+    return await collection.find();
+  }
+
+  async deleteDocument<T>(data: Partial<T>, collection: Model<T>): Promise<{deletedCount: number}> {
+    const result = await collection.deleteOne(data);
+    return {deletedCount: result.deletedCount};
+  }
+
   async createDocument<T>(data: T, collection: Model<T>): Promise<T> {
     return await collection.create(data);
   }
+
+  /*async updateDocument<T>(data: T, collection: Model<T>): Promise<T> {
+    return await collection.findOneAndUpdate(data);
+  }*/
 }
 
 export default DatabaseService;
